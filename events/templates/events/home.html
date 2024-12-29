@@ -1,0 +1,68 @@
+{% extends "events/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background-image: url('{% static "images/backgroundimage.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+</style>
+<div class="container mt-5">
+    <div class="jumbotron text-center bg-primary text-white py-5" style="background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);">
+        <h1 class="display-4">Welcome to the Event Management Dashboard</h1>
+        <p class="lead">Manage your events, attendees, and tasks efficiently.</p>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm" style="transition: transform 0.2s;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Events</h5>
+                    <p class="card-text">View and manage all your events.</p>
+                    <a href="{% url 'event-list' %}" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Go to Events
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm" style="transition: transform 0.2s;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Attendees</h5>
+                    <p class="card-text">View and manage all your attendees.</p>
+                    <a href="{% url 'attendee-list' %}" class="btn btn-primary">
+                        <i class="fas fa-user-friends"></i> Go to Attendees
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm" style="transition: transform 0.2s;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Tasks</h5>
+                    <p class="card-text">View and manage all your tasks.</p>
+                    <a href="{% url 'task-list' %}" class="btn btn-primary">
+                        <i class="fas fa-tasks"></i> Go to Tasks
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseover', () => {
+            card.style.transform = 'scale(1.05)';
+        });
+        card.addEventListener('mouseout', () => {
+            card.style.transform = 'scale(1)';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!-- filepath: /C:/Users/abhis/Desktop/Assignment webknot/assignment/tasks/templates/tasks/task_tracker.html -->
+{% extends "base.html" %}
+
+{% block title %}Task Tracker{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Task Tracker</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Assigned Attendee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.deadline }}</td>
+                        <td>
+                            <form method="post" action="{% url 'task-update' task.pk %}">
+                                {% csrf_token %}
+                                <select name="status" class="form-select" onchange="this.form.submit()">
+                                    <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>{{ task.assigned_attendee.name }}</td>
+                        <td>
+                            <a href="{% url 'task-edit' task.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'task-delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

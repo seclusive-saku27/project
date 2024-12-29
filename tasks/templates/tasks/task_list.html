@@ -1,0 +1,79 @@
+{% extends "events/base.html" %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4"><i class="fas fa-tasks"></i> Task List</h1>
+    <a href="{% url 'task-create' %}" class="btn btn-primary mb-3"> <i class="fas fa-plus"></i> Add Task</a>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Assigned Attendee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                        {% if task.assigned_attendee.exists %}
+                            {% for attendee in task.assigned_attendee.all %}
+                                <tr>
+                                    
+                                        <td rowspan="{{ task.assigned_attendees.count }}">{{ task.name }}</td>
+                                        <td rowspan="{{ task.assigned_attendees.count }}">{{ task.deadline }}</td>
+                                        <td rowspan="{{ task.assigned_attendees.count }}">
+                                            <form method="post" action="{% url 'task-update' task.pk %}">
+                                                {% csrf_token %}
+                                                <select name="status" class="form-select" onchange="this.form.submit()">
+                                                    <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                                    <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                </select>
+                                            </form>
+                                        </td>
+                                    
+                                    <td>{{ attendee.name }}</td>
+                                    
+                                        <td rowspan="{{ task.assigned_attendees.count }}">
+                                            <a href="{% url 'task-update' task.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="{% url 'task-delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                                        </td>
+                                    
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.deadline }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'task-update' task.pk %}">
+                                        {% csrf_token %}
+                                        <select name="status" class="form-select" onchange="this.form.submit()">
+                                            <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                            <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>No attendees assigned</td>
+                                <td>
+                                    <a href="{% url 'task-update' task.pk %}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'task-delete' task.pk %}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

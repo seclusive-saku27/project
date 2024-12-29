@@ -1,0 +1,56 @@
+{% extends "events/base.html" %}
+
+{% block title %}Event List{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+    .event-list-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .event-list-item {
+        margin-bottom: 15px;
+    }
+    .event-list-item h5 {
+        color: #007bff;
+    }
+    .event-list-item p {
+        margin: 0;
+    }
+    .event-list-item .btn {
+        margin-right: 5px;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Event List</h1>
+    <div class="text-center mb-4">
+        <a href="{% url 'event-create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Event
+        </a>
+    </div>
+    <div class="event-list-container">
+        <ul class="list-group">
+            {% for event in events %}
+                <li class="list-group-item event-list-item">
+                    <h5>{{ event.name }}</h5>
+                    <p><strong>Description:</strong> {{ event.description }}</p>
+                    <p><strong>Location:</strong> {{ event.location }}</p>
+                    <p><strong>Date:</strong> {{ event.date }}</p>
+                    <div class="text-right">
+                        <a href="{% url 'event-edit' event.pk %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'event-delete' event.pk %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
